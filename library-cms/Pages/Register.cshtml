@@ -8,23 +8,16 @@
 
 <form method="post">
     <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="Username" required />
+        <label asp-for="Username"></label>
+        <input asp-for="Username" />
     </div>
     <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="Password" required />
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" />
     </div>
-    <div>
-        <label for="role">Role:</label>
-        <select name="Role" id="role" required>
-            <option value="Admin">Admin</option>
-            <option value="Student">Student</option>
-        </select>
-    </div>
-    <button type="submit">Register</button>
     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
-        <p style="color:red">@Model.ErrorMessage</p>
+        <p style="color: red;">@Model.ErrorMessage</p>
     }
+    <button type="submit">Register</button>
 </form>

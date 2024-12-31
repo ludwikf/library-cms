@@ -1,0 +1,31 @@
+@page
+@model LibraryManagementWeb.Pages.BooksModel
+@{
+    ViewData["Title"] = "Books List";
+}
+
+<h2>Books</h2>
+
+<a href="/AddBook" class="btn btn-primary mb-3">Add New Book</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Availability</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model.Books)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Genre</td>
+                <td>@(book.IsAvailable ? "Available" : "Not Available")</td>
+            </tr>
+        }
+    </tbody>
+</table>

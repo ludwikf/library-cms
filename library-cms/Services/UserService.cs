@@ -1,51 +1,44 @@
 ﻿using LibraryManagementWeb.Models;
 using System.Text.Json;
-using System.IO;
 
 namespace LibraryManagementWeb.Services
 {
     public class UserService
     {
-        private const string UserFilePath = "users.json"; // Path to the JSON file
+        private readonly string _userFilePath = "zdata-users.json";
 
-        // Load users from the JSON file
-        private List<User> LoadUsers()
+        // Retrieve all users from the JSON file
+        public List<User> GetAllUsers()
         {
-            if (File.Exists(UserFilePath))
-            {
-                var json = File.ReadAllText(UserFilePath);
-                return JsonSerializer.Deserialize<List<User>>(json) ?? new List<User>();
-            }
-            return new List<User>();
+            if (!File.Exists(_userFilePath))
+                return new List<User>();
+
+            var json = File.ReadAllText(_userFilePath);
+            return JsonSerializer.Deserialize<List<User>>(json) ?? new List<User>();
         }
 
-        // Save users to the JSON file
-        private void SaveUsers(List<User> users)
+        // Get a user by username
+        public User? GetUserByUsername(string username)
         {
+            var users = GetAllUsers();
+            return users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+        }
+
+        // Validate user credentials
+        public User? ValidateUser(string username, string password)
+        {
+            var user = GetUserByUsername(username);
+            return (user != null && user.Password == password) ? user : null;
+        }
+
+        // Add a new user to the JSON file
+        public void AddUser(User newUser)
+        {
+            var users = GetAllUsers();
+            users.Add(newUser);
+
             var json = JsonSerializer.Serialize(users, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(UserFilePath, json);
-        }
-
-        // Validate the user's credentials during login
-        public User ValidateUser(string username, string password)
-        {
-            var users = LoadUsers();
-            return users.FirstOrDefault(u => u.Username == username && u.Password == password);
-        }
-
-        // Get user by username (for registration to check if it exists)
-        public User GetUserByUsername(string username)
-        {
-            var users = LoadUsers();
-            return users.FirstOrDefault(u => u.Username == username);
-        }
-
-        // Add a new user (register new user)
-        public void AddUser(User user)
-        {
-            var users = LoadUsers();
-            users.Add(user);
-            SaveUsers(users);
+            File.WriteAllText(_userFilePath, json);
         }
     }
 }
