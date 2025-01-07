@@ -24,30 +24,35 @@ namespace LibraryManagementWeb.Pages
 
         public IActionResult OnPost()
         {
+            Console.WriteLine($"Login attempt - Username: {Username}");
+
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             {
                 ErrorMessage = "Username and password are required.";
                 return Page();
             }
 
-            // Validate user credentials
+    
             var user = _userService.ValidateUser(Username, Password);
+            
+        
+            Console.WriteLine($"User validation result: {(user != null ? "Success" : "Failed")}");
+            
             if (user == null)
             {
                 ErrorMessage = "Invalid username or password.";
                 return Page();
             }
 
-            // Set session
+         
             HttpContext.Session.SetString("Username", user.Username);
             HttpContext.Session.SetString("Role", user.Role);
 
-            // Redirect to home page
+           
             var sessionUsername = HttpContext.Session.GetString("Username");
             var sessionRole = HttpContext.Session.GetString("Role");
-            Console.WriteLine($"Session Username: {sessionUsername}, Role: {sessionRole}");
+            Console.WriteLine($"Session set - Username: {sessionUsername}, Role: {sessionRole}");
 
-            // Redirect to home page
             return RedirectToPage("/Index");
         }
     }

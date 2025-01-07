@@ -1,0 +1,117 @@
+.container.mt-4 {
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.book-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.book-image {
+  height: 220px;
+  width: 180px;
+  object-fit: contain;
+  padding: 0.5rem;
+  border-radius: 8px;
+  margin: 0.5rem auto;
+  display: block;
+}
+
+.card-body {
+  padding: 1.5rem;
+  background-color: white;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+}
+
+.card-text {
+  margin-bottom: 0.5rem;
+  color: #6c757d;
+}
+
+.card-item {
+  margin-bottom: 0.25rem;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}
+
+.badge {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+  border-radius: 20px;
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.availability-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.75rem;
+}
+
+.availability-badge.available {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.availability-badge.unavailable {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.row {
+  margin: 0 -0.75rem;
+}
+
+.col {
+  padding: 0.75rem;
+}
+
+.text-primary {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1a73e8 !important;
+}
+
+.btn-primary {
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+  border-radius: 6px;
+  background-color: #1a73e8;
+  border: none;
+  box-shadow: 0 2px 4px rgba(26, 115, 232, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: #1557b0;
+  box-shadow: 0 4px 8px rgba(26, 115, 232, 0.3);
+}
+
+.disabled-button {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+}

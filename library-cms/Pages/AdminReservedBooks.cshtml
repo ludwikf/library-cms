@@ -1,0 +1,61 @@
+@page
+@model LibraryManagementWeb.Pages.AdminReservedBooksModel
+@{
+    ViewData["Title"] = "All Reserved Books";
+}
+
+<link rel="stylesheet" href="~/css/books.css" />
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-primary">All Reserved Books</h2>
+    </div>
+
+    @if (Model.ReservedBooks.Any())
+    {
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr class="bg-light">
+                        <th class="px-4 py-3 align-middle">Title</th>
+                        <th class="px-4 py-3 align-middle">Author</th>
+                        <th class="px-4 py-3 align-middle">Genre</th>
+                        <th class="px-4 py-3 align-middle">Reserved By</th>
+                        <th class="px-4 py-3 text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var book in Model.ReservedBooks)
+                    {
+                        <tr>
+                            <td class="px-4 py-3 align-middle">@book.Title</td>
+                            <td class="px-4 py-3 align-middle">@book.Author</td>
+                            <td class="px-4 py-3 align-middle">@book.Genre</td>
+                            <td class="px-4 py-3 align-middle">@book.ReservedBy</td>
+                            <td class="px-4 py-3 text-end">
+                                <form method="post" asp-page-handler="RemoveReservation">
+                                    <input type="hidden" name="bookTitle" value="@book.Title" />
+                                    <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3">
+                                        Remove Reservation
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">No books are currently reserved.</div>
+    }
+</div>

@@ -1,0 +1,68 @@
+@page
+@model LibraryManagementWeb.Pages.ReservedBooksModel
+@{
+    ViewData["Title"] = "My Books";
+}
+
+<link rel="stylesheet" href="~/css/books.css" />
+
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-primary">My Books</h2>
+    </div>
+
+    @if (Model.ReservedBooks.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var book in Model.ReservedBooks)
+            {
+                <div class="col">
+                    <div class="card h-100 book-card">
+                        <img src="/images/book.png" 
+                             class="card-img-top book-image" 
+                             alt="@book.Title"
+                             onerror="this.src='/images/books/default-book.jpg'">
+                        <div class="card-body">
+                            <h5 class="card-title">@book.Title</h5>
+                            <p class="card-item">
+                                Author:
+                                <span>@book.Author</span>
+                            </p>
+                            <p>
+                                Genre:
+                                <span>@book.Genre</span>
+                            </p>
+                            <form method="post" asp-page-handler="Return">
+                                <input type="hidden" name="bookTitle" value="@book.Title" />
+                                <button type="submit" class="btn btn-danger mt-2 w-100">
+                                    Return Book
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info mt-4">
+            You haven't reserved any books yet.
+        </div>
+    }
+</div>

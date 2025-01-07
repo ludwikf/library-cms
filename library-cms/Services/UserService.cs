@@ -7,7 +7,6 @@ namespace LibraryManagementWeb.Services
     {
         private readonly string _userFilePath = "zdata-users.json";
 
-        // Retrieve all users from the JSON file
         public List<User> GetAllUsers()
         {
             if (!File.Exists(_userFilePath))
@@ -17,21 +16,36 @@ namespace LibraryManagementWeb.Services
             return JsonSerializer.Deserialize<List<User>>(json) ?? new List<User>();
         }
 
-        // Get a user by username
         public User? GetUserByUsername(string username)
         {
             var users = GetAllUsers();
             return users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
         }
 
-        // Validate user credentials
+  
         public User? ValidateUser(string username, string password)
         {
-            var user = GetUserByUsername(username);
-            return (user != null && user.Password == password) ? user : null;
+            try
+            {
+                var user = GetUserByUsername(username);
+                Console.WriteLine($"Validating user: {username}");
+                Console.WriteLine($"User found: {user != null}");
+                
+                if (user != null)
+                {
+                    Console.WriteLine($"Password check: {user.Password == password}");
+                }
+                
+                return (user != null && user.Password == password) ? user : null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error validating user: {ex.Message}");
+                return null;
+            }
         }
 
-        // Add a new user to the JSON file
+      
         public void AddUser(User newUser)
         {
             var users = GetAllUsers();

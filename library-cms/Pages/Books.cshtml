@@ -4,28 +4,80 @@
     ViewData["Title"] = "Books List";
 }
 
-<h2>Books</h2>
+<link rel="stylesheet" href="~/css/books.css" />
 
-<a href="/AddBook" class="btn btn-primary mb-3">Add New Book</a>
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-primary">Our Library Collection</h2>
+        @if (HttpContext.Session.GetString("Role") == "Admin")
+        {
+            <a href="/AddBook" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New Book
+            </a>
+        }
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Genre</th>
-            <th>Availability</th>
-        </tr>
-    </thead>
-    <tbody>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         @foreach (var book in Model.Books)
         {
-            <tr>
-                <td>@book.Title</td>
-                <td>@book.Author</td>
-                <td>@book.Genre</td>
-                <td>@(book.IsAvailable ? "Available" : "Not Available")</td>
-            </tr>
+            <div class="col">
+                <div class="card h-100 book-card">
+                    <img src="/images/book.png" 
+                         class="card-img-top book-image" 
+                         alt="@book.Title"
+                         onerror="this.src='/images/books/default-book.jpg'">
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                        <p class="card-item">
+                        Author:
+                            <span>
+                                 @book.Author
+                            </span>
+                        </p>
+                        <p>
+                        Genre:
+                            <span >@book.Genre</span>
+                        </p>
+                        <div class="availability-badge @(book.IsAvailable ? "available" : "unavailable")">
+                            @(book.IsAvailable ? "Available" : "Not Available")
+                        </div>
+                        @if (HttpContext.Session.GetString("Username") != null)
+                        {
+                            <form method="post" asp-page-handler="Reserve">
+                                <input type="hidden" name="bookTitle" value="@book.Title" />
+                                <button type="submit" 
+                                        class="btn btn-primary mt-2 w-100 @(!book.IsAvailable ? "disabled-button" : "")" 
+                                        disabled="@(!book.IsAvailable)">
+                                    @(book.IsAvailable ? "Reserve Now" : "Reserved")
+                                </button>
+                            </form>
+                        }
+                        @if (HttpContext.Session.GetString("Role") == "Admin")
+                        {
+                            <form method="post" asp-page-handler="Remove" class="mt-2">
+                                <input type="hidden" name="bookTitle" value="@book.Title" />
+                                <button type="submit" class="btn btn-danger w-100">
+                                    Remove Book
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>

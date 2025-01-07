@@ -4,20 +4,38 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
+<link rel="stylesheet" href="~/css/auth.css" />
 
-<form method="post">
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="Username" />
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="Password" />
-    </div>
-    <button type="submit">Login</button>
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+<div class="login-container">
+    <h1>Login</h1>
+    @if (Model.ErrorMessage != null)
     {
-        <p style="color:red">@Model.ErrorMessage</p>
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
     }
-</form>
+    <form method="post" id="loginForm">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="Username" class="form-control" required 
+                   data-val="true" data-val-required="Username is required." />
+            <span class="text-danger" data-valmsg-for="Username"></span>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="Password" class="form-control" required 
+                   data-val="true" data-val-required="Password is required." />
+            <span class="text-danger" data-valmsg-for="Password"></span>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            $("#loginForm").validate();
+        });
+    </script>
+}
+
+

@@ -1,41 +1,34 @@
 using LibraryManagementWeb.Models;
 using LibraryManagementWeb.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.IO;
-using System.Text.Json;
 
 namespace LibraryManagementWeb.Pages
 {
-    public class AddBookModel : PageModel
+    public class AdminReservedBooksModel : PageModel
     {
         private readonly BookService _bookService;
 
-        [BindProperty]
-        public Book NewBook { get; set; }
+        public List<Book> ReservedBooks { get; set; } = new List<Book>();
 
-        public string? ErrorMessage { get; set; }
-
-        public AddBookModel(BookService bookService)
+        public AdminReservedBooksModel(BookService bookService)
         {
             _bookService = bookService;
         }
 
         public IActionResult OnGet()
         {
-           
             var role = HttpContext.Session.GetString("Role");
             if (role != "Admin")
             {
-              
                 return RedirectToPage("/Index");
             }
+
+            ReservedBooks = _bookService.GetAllBooks().Where(b => !b.IsAvailable).ToList();
             return Page();
         }
 
-        [HttpPost]
-        public IActionResult OnPost()
+        public IActionResult OnPostRemoveReservation(string bookTitle)
         {
             var role = HttpContext.Session.GetString("Role");
             if (role != "Admin")
@@ -43,23 +36,17 @@ namespace LibraryManagementWeb.Pages
                 return RedirectToPage("/Index");
             }
 
-            if (!ModelState.IsValid || NewBook == null)
-            {
-                ErrorMessage = "Please fill in all required fields.";
-                return Page();
-            }
-
             try
             {
-                NewBook.IsAvailable = true;
-                _bookService.AddBook(NewBook);
-                return RedirectToPage("/Books");
+                _bookService.AdminRemoveReservation(bookTitle);
+                TempData["SuccessMessage"] = $"Successfully removed reservation for '{bookTitle}'";
             }
             catch (Exception ex)
             {
-                ErrorMessage = "An error occurred while adding the book.";
-                return Page();
+                TempData["ErrorMessage"] = ex.Message;
             }
+
+            return RedirectToPage();
         }
     }
 }

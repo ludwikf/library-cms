@@ -1,8 +1,23 @@
 [
   {
-    "Title": "Mapa",
-    "Author": "Pablo",
-    "Genre": "Informational",
-    "IsAvailable": true
+    "Title": "The Lord of the Rings",
+    "Author": "J.R.R. Tolklen",
+    "Genre": "Fantasy",
+    "IsAvailable": true,
+    "ReservedBy": null
+  },
+  {
+    "Title": "Harry Potter",
+    "Author": "J.K. Rowling",
+    "Genre": "Fantasy",
+    "IsAvailable": true,
+    "ReservedBy": null
+  },
+  {
+    "Title": "The Witcher",
+    "Author": "Andrzej Sapkowski",
+    "Genre": "Fantasy",
+    "IsAvailable": true,
+    "ReservedBy": null
   }
 ]

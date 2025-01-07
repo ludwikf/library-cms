@@ -4,34 +4,30 @@
     ViewData["Title"] = "Add New Book";
 }
 
-<h2>Add New Book</h2>
+<link rel="stylesheet" href="~/css/add-book.css" />
 
-<form method="post">
+<h1>Add New Book</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="error-message">@Model.ErrorMessage</div>
+}
+
+<form method="post" class="login-container" id="addBookForm">
     <div class="form-group">
-        <label for="Title">Title</label>
-        <input type="text" id="Title" class="form-control" asp-for="Book.Title" />
-        <span asp-validation-for="Book.Title" class="text-danger"></span>
+        <label asp-for="NewBook.Title"></label>
+        <input asp-for="NewBook.Title" class="form-control" required />
     </div>
-
     <div class="form-group">
-        <label for="Author">Author</label>
-        <input type="text" id="Author" class="form-control" asp-for="Book.Author" />
-        <span asp-validation-for="Book.Author" class="text-danger"></span>
+        <label asp-for="NewBook.Author"></label>
+        <input asp-for="NewBook.Author" class="form-control" required />
     </div>
-
     <div class="form-group">
-        <label for="Genre">Genre</label>
-        <input type="text" id="Genre" class="form-control" asp-for="Book.Genre" />
-        <span asp-validation-for="Book.Genre" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="IsAvailable">Available</label>
-        <input type="checkbox" id="IsAvailable" class="form-check-input" asp-for="Book.IsAvailable" />
-        <span asp-validation-for="Book.IsAvailable" class="text-danger"></span>
+        <label asp-for="NewBook.Genre"></label>
+        <input asp-for="NewBook.Genre" class="form-control" required />
     </div>
 
     <button type="submit" class="btn btn-primary">Add Book</button>
 </form>
 
-<a href="/Books" class="btn btn-secondary mt-2">Back to Books List</a>
+

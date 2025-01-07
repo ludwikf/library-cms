@@ -13,8 +13,10 @@ namespace LibraryManagementWeb.Pages
         public string Username { get; set; }
         [BindProperty]
         public string Password { get; set; }
+        [BindProperty]
+        public string ConfirmPassword { get; set; }
 
-        public string? ErrorMessage { get; set; } // Add this property
+        public string? ErrorMessage { get; set; }
 
         public RegisterModel(UserService userService)
         {
@@ -23,13 +25,18 @@ namespace LibraryManagementWeb.Pages
 
         public IActionResult OnPost()
         {
-            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(ConfirmPassword))
             {
-                ErrorMessage = "Username and password are required.";
+                ErrorMessage = "All fields are required.";
                 return Page();
             }
 
-            // Check if the user already exists
+            if (Password != ConfirmPassword)
+            {
+                ErrorMessage = "Passwords do not match.";
+                return Page();
+            }
+
             var existingUser = _userService.GetUserByUsername(Username);
             if (existingUser != null)
             {
@@ -37,7 +44,7 @@ namespace LibraryManagementWeb.Pages
                 return Page();
             }
 
-            // Add new user
+         
             var newUser = new User
             {
                 Username = Username,
